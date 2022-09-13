@@ -2,6 +2,7 @@ import { useState } from "react";
 import List from "../../components/List";
 import Welcome from "../../components/Welcome";
 import Form from "../../components/Form";
+import Students from "../../components/students";
 const Main = () => {
   const [count, setCount] = useState(1);
   const counter = () => setCount(count + 1);
@@ -39,10 +40,37 @@ const Main = () => {
     );
   }
 
+  const [stundetList, setStudentList] = useState([
+    {
+      id: 1,
+      fullName: "araz maghami",
+      classNumber: 123,
+      tel: "0122324",
+      email: "amir@maghami.ir",
+    },
+    {
+      id: 2,
+      fullName: "amir maghami",
+      classNumber: 123,
+      tel: "0122324",
+      email: "amir@maghami.ir",
+    },
+  ]);
+
+  const fullNameHandler = (event: any, id: any) => {
+    const studentIndex = stundetList.findIndex((item) => item.id === id);
+    const targetStudent = { ...stundetList[studentIndex] };
+    targetStudent.fullName = event.target.value;
+    const students = [...stundetList];
+    students[studentIndex] = targetStudent;
+    setStudentList(students);
+
+  };
+
   return (
     <main>
       <section className="py-20">
-        <div className="container mx-auto - px-3">
+        <div className="container mx-auto px-3">
           <div>{count}</div>
           <div>{myText}</div>
           <button className="text-lg bg-green-500 px-20" onClick={counter}>
@@ -51,8 +79,18 @@ const Main = () => {
           <input type="text" value={myText} onInput={myInputHandler} />
         </div>
       </section>
+      <section className=" py-20">
+        <div className="container mx-auto px-3">
+          <div className="grid grid-cols-4 gap-4">
+            <Students
+              studentList={stundetList}
+              fullNameOnChange={fullNameHandler}
+            />
+          </div>
+        </div>
+      </section>
       <section className="bg-blue-50 py-20">
-        <div className="container mx-auto - px-3">
+        <div className="container mx-auto  px-3">
           <div>{count}</div>
           <div>{myText}</div>
           <button
