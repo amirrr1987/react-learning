@@ -1,4 +1,5 @@
-const Student = (props:any) => {
+import Button from "../Ui/Button";
+const Student = (props: any) => {
   return (
     <div className="border p-4">
       <div>id: {props.user.id}</div>
@@ -23,6 +24,7 @@ const Student = (props:any) => {
           type="text"
           name="classNumber"
           value={props.user.classNumber}
+          onInput={props.user.classNumberOnChange}
         />
       </div>
       <div className="mb-4">
@@ -34,6 +36,7 @@ const Student = (props:any) => {
           type="tell"
           name="tell"
           value={props.user.tell}
+          onInput={props.user.tellOnChange}
         />
       </div>
       <div className="mb-4">
@@ -45,7 +48,26 @@ const Student = (props:any) => {
           type="email"
           name="email"
           value={props.user.email}
+          onInput={props.user.emailOnChange}
         />
+      </div>
+      <div className="mb-4">
+        <label className="mb-1 block" htmlFor="email">
+          active
+        </label>
+        <input
+          className="border block w-full"
+          type="checkbox"
+          name="checkbox"
+          checked={props.user.active}
+          onChange={props.user.activeOnChange}
+        />
+      </div>
+      <div className="mb-4">
+        <Button
+          btnColor={props.user.btnColor}
+          onClick={props.user.removeOnChange}
+        ></Button>
       </div>
     </div>
   );
