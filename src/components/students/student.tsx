@@ -1,4 +1,6 @@
 import Button from "../Ui/Button";
+import { Icon } from "@iconify/react";
+
 const Student = (props: any) => {
   return (
     <div className="border p-4">
@@ -8,7 +10,7 @@ const Student = (props: any) => {
           fullName
         </label>
         <input
-          className="border block w-full"
+          className="border block w-full outline-transparent"
           type="text"
           name="fullName"
           value={props.user.fullName}
@@ -67,7 +69,10 @@ const Student = (props: any) => {
         <Button
           btnColor={props.user.btnColor}
           onClick={props.user.removeOnChange}
-        ></Button>
+        >
+
+          <Icon icon="icon-park-outline:delete" />
+        </Button>
       </div>
     </div>
   );

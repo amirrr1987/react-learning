@@ -16,10 +16,10 @@ const Button = (props: any) => {
   }
   return (
     <button
-      className={` w-28 h-10 rounded ${classes.join(" ")}`}
+      className={` w-min h-min p-4 rounded ${classes.join(" ")}`}
       onClick={props.onClick}
     >
-      ok btn
+      {props.children}
     </button>
   );
 };

@@ -3,6 +3,8 @@ import List from "../../components/List";
 import Welcome from "../../components/Welcome";
 import Form from "../../components/Form";
 import Students from "../../components/students";
+import { Icon } from "@iconify/react";
+
 const Main = () => {
   const [count, setCount] = useState(1);
   const counter = () => setCount(count + 1);
@@ -50,100 +52,38 @@ const Main = () => {
       active: false,
       btnColor: "red",
     },
-    {
-      id: 2,
-      fullName: "sama maghami",
-      classNumber: 343,
-      tel: "0122324",
-      email: "amir@maghami.ir",
-      active: true,
-      btnColor: "red",
-    },
-    {
-      id: 3,
-      fullName: "amir maghami",
-      classNumber: 1,
-      tel: "0122324",
-      email: "amir@maghami.ir",
-      active: true,
-      btnColor: "pink",
-    },
-    {
-      id: 4,
-      fullName: "morteza maghami",
-      classNumber: 123,
-      tel: "0122324",
-      email: "amir@maghami.ir",
-      active: true,
-      btnColor: "green",
-    },
-    {
-      id: 5,
-      fullName: "mohamad bagher maghami",
-      classNumber: 123,
-      tel: "0122324",
-      email: "amir@maghami.ir",
-      active: true,
-      btnColor: "yellow",
-    },
-    {
-      id: 6,
-      fullName: "majid maghami",
-      classNumber: 123,
-      tel: "0122324",
-      email: "amir@maghami.ir",
-      active: true,
-      btnColor: "blue",
-    },
   ]);
+  const findIndex = (id: number) => {
+    return stundetList.findIndex((item) => item.id === id);
+  };
 
-  const fullNameHandler = (event: any, id: any) => {
-    const studentIndex = stundetList.findIndex((item) => item.id === id);
-    const targetStudent = { ...stundetList[studentIndex] };
-    targetStudent.fullName = event.target.value;
+  const findItem = (index: number) => {
+    return { ...stundetList[index] };
+  };
+  const updateStudents = (studentIndex: any, targetStudent: any) => {
     const students = [...stundetList];
     students[studentIndex] = targetStudent;
     setStudentList(students);
   };
 
-  const classNumberOnChange = (event: any, id: any) => {
-    const studentIndex = stundetList.findIndex((item) => item.id === id);
-    const targetStudent = { ...stundetList[studentIndex] };
-    targetStudent.classNumber = event.target.value;
-    const students = [...stundetList];
-    students[studentIndex] = targetStudent;
-    setStudentList(students);
+  const textInputHandler = (key:any,event: any, id: number) => {
+    const studentIndex = findIndex(id);
+    const targetStudent = findItem(studentIndex);
+    targetStudent[key] = event.target.value;
+    updateStudents(studentIndex, targetStudent);
   };
 
-  const tellOnChange = (event: any, id: any) => {
-    const studentIndex = stundetList.findIndex((item) => item.id === id);
-    const targetStudent = { ...stundetList[studentIndex] };
-    targetStudent.tel = event.target.value;
-    const students = [...stundetList];
-    students[studentIndex] = targetStudent;
-    setStudentList(students);
-  };
 
-  const emailOnChange = (event: any, id: any) => {
-    const studentIndex = stundetList.findIndex((item) => item.id === id);
-    const targetStudent = { ...stundetList[studentIndex] };
-    targetStudent.email = event.target.value;
-    const students = [...stundetList];
-    students[studentIndex] = targetStudent;
-    setStudentList(students);
-  };
 
   const activeOnChange = (event: any, id: any) => {
-    const studentIndex = stundetList.findIndex((item) => item.id === id);
-    const targetStudent = { ...stundetList[studentIndex] };
+    const studentIndex = findIndex(id);
+    const targetStudent = findItem(studentIndex);
     targetStudent.active = event.target.checked;
-    const students = [...stundetList];
-    students[studentIndex] = targetStudent;
-    setStudentList(students);
+    updateStudents(studentIndex, targetStudent);
   };
 
   const removeOnChange = (id: any) => {
-    const studentIndex = stundetList.findIndex((item) => item.id === id);
+    const studentIndex = findIndex(id);
     const students = [...stundetList];
     if (students.length > 0) {
       students.splice(studentIndex, 1);
@@ -157,12 +97,12 @@ const Main = () => {
     let id = lastItem ? lastItem.id + 1 : 1;
     students.push({
       id: id,
-      fullName: "amir maghami",
-      classNumber: 123,
-      tel: "0122324",
-      email: "amir@maghami.ir",
-      active: true,
-      btnColor: "red",
+      fullName: "",
+      classNumber: 0,
+      tel: "",
+      email: "",
+      active: false,
+      btnColor: "pink",
     });
     setStudentList(students);
   };
@@ -173,20 +113,21 @@ const Main = () => {
   };
 
   const [searchValue, setSearchValue] = useState("");
-  const [arrHolder, setArrHolder]:any= useState([]);
+  const [arrHolder, setArrHolder]: any = useState([]);
+
   useEffect(() => {
     setArrHolder(stundetList);
   }, []);
+
   const searchValueHandler = (event: any) => {
     let res = arrHolder.filter((item: any) => {
       let itemData = item.fullName.toUpperCase();
       let textData = event.target.value.toUpperCase();
-      
-      return itemData.indexOf(textData)> -1
-      
-    })
-    
-    setStudentList(res)
+
+      return itemData.indexOf(textData) > -1;
+    });
+
+    setStudentList(res);
     setSearchValue(event.target.value);
   };
 
@@ -219,23 +160,23 @@ const Main = () => {
               +
             </button>
             <button
-              className="bg-red-500 text-red-50 w-28 h-10 rounded"
+              className="bg-red-500 text-red-50 w-min h-min rounded text-4xl"
               onClick={toggleLayoutHandler}
             >
-              {toggleLayout ? "3" : "4"}
+              <Icon icon={toggleLayout ? "ci:grid-vertical" : "ci:grid"} />
             </button>
           </div>
           <div
             className={`grid gap-4 ${
-              toggleLayout ? "grid-cols-4" : "grid-cols-3"
+              toggleLayout ? "grid-cols-2" : "grid-cols-3"
             }`}
           >
             <Students
               studentList={stundetList}
-              fullNameOnChange={fullNameHandler}
-              classNumberOnChange={classNumberOnChange}
-              tellOnChange={tellOnChange}
-              emailOnChange={emailOnChange}
+              fullNameOnChange={textInputHandler}
+              classNumberOnChange={textInputHandler}
+              tellOnChange={textInputHandler}
+              emailOnChange={textInputHandler}
               activeOnChange={activeOnChange}
               removeOnChange={removeOnChange}
             />
