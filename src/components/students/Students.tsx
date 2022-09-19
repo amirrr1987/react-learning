@@ -3,7 +3,7 @@ import Student from "./student";
 const Students = (props: any) => {
   return props.studentList.map((item: any) => {
     item.fullNameOnChange = (event: any) => {
-      props.fullNameOnChange('fullName',event, item.id);
+      props.fullNameOnChange("fullName", event, item.id);
     };
     item.classNumberOnChange = (event: any) => {
       props.classNumberOnChange("classNumber", event, item.id);
@@ -19,11 +19,11 @@ const Students = (props: any) => {
 
     item.activeOnChange = (event: any) => {
       props.activeOnChange(event, item.id);
-    }
+    };
 
-    item.removeOnChange = (event:any) => {
-      props.removeOnChange(event,item.id)
-    }
+    item.removeOnChange = (event: any) => {
+      props.removeOnChange(event, item.id);
+    };
 
     return <Student user={item} key={item.id} />;
   });

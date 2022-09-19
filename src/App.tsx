@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, Fragment } from "react";
 
 import Header from "./layouts/Header";
 import Main from "./layouts/Main";
@@ -9,11 +9,13 @@ const App = () => {
   const counterHandler: any = (name: number) =>
     setCount((count) => count + 1 + name);
   return (
-    <div className="grid grid-rows-[max-content,1fr,max-content] min-h-screen">
-      <Header />
-      <Main />
-      <Footer />
-    </div>
+    <Fragment>
+      <div className="grid grid-rows-[max-content,1fr,max-content] min-h-screen">
+        <Header />
+        <Main />
+        <Footer />
+      </div>
+    </Fragment>
   );
 };
 

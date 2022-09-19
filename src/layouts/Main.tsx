@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
-import List from "../../components/List";
-import Welcome from "../../components/Welcome";
-import Form from "../../components/Form";
-import Students from "../../components/students";
+import { useEffect, useState, useRef } from "react";
+import List from "../components/List";
+import Welcome from "../components/Welcome";
+import Form from "../components/Form";
+import Students from "../components/students/Students";
 import { Icon } from "@iconify/react";
-
+import NewStudent from "../components/students/NewStudent";
 const Main = () => {
+  const searchInputRef = useRef(null);
   const [count, setCount] = useState(1);
   const counter = () => setCount(count + 1);
 
@@ -66,14 +67,12 @@ const Main = () => {
     setStudentList(students);
   };
 
-  const textInputHandler = (key:any,event: any, id: number) => {
+  const textInputHandler = (key: any, event: any, id: any) => {
     const studentIndex = findIndex(id);
     const targetStudent = findItem(studentIndex);
-    targetStudent[key] = event.target.value;
+    targetStudent[`${key}`] = event.target.value;
     updateStudents(studentIndex, targetStudent);
   };
-
-
 
   const activeOnChange = (event: any, id: any) => {
     const studentIndex = findIndex(id);
@@ -117,6 +116,7 @@ const Main = () => {
 
   useEffect(() => {
     setArrHolder(stundetList);
+    searchInputRef.current.focus();
   }, []);
 
   const searchValueHandler = (event: any) => {
@@ -131,8 +131,79 @@ const Main = () => {
     setSearchValue(event.target.value);
   };
 
+  const [sFullName, setSFullName] = useState("");
+  const sFullNameHandler = (event: any) => {
+    setSFullName(event.target.value);
+  };
+
+  const [sClasssNumber, setSClasssNumber] = useState(0);
+  const sClasssNumberHandler = (event: any) => {
+    setSClasssNumber(event.target.value);
+  };
+  const [sTell, setSTell] = useState("");
+  const sTellHandler = (event: any) => {
+    setSTell(event.target.value);
+  };
+  const [sEmail, setSEmail] = useState("");
+
+  const sEmailHandler = (event: any) => {
+    setSEmail(event.target.value);
+  };
+
+  const [sActive, setSActive] = useState(false);
+  const sActiveHandler = (event: any) => {
+    setSActive(event.target.checked);
+  };
+
+  const newStudentHalndler = () => {
+    const newStudents = [...stundetList];
+    let lastItem = newStudents[newStudents.length - 1];
+    let id = lastItem ? lastItem.id + 1 : 1;
+    newStudents.push({
+      id: id,
+      fullName: sFullName,
+      classNumber: sClasssNumber,
+      tel: sTell,
+      email: sEmail,
+      active: sActive,
+      btnColor: "pink",
+    });
+
+    setStudentList(newStudents);
+    setSFullName("");
+    setSClasssNumber(0);
+    setSTell("");
+    setSEmail("");
+    setSActive(false);
+  };
+
+
+  const goTopBtnHandler = () => {
+    if (window.scrollY > searchInputRef.current.offsetTop) {
+      window.scrollTo(0, searchInputRef.current.offsetTop);
+    }
+    searchInputRef.current.focus()
+  };
+
   return (
     <main>
+      <section>
+        <div className="container mx-auto px-3">
+          <NewStudent
+            sFullName={sFullName}
+            sFullNameHandler={sFullNameHandler}
+            sClasssNumber={sClasssNumber}
+            sClasssNumberHandler={sClasssNumberHandler}
+            sTell={sTell}
+            sTellHandler={sTellHandler}
+            sEmail={sEmail}
+            sEmailHandler={sEmailHandler}
+            sActive={sActive}
+            sActiveHandler={sActiveHandler}
+            newStudentHalndler={newStudentHalndler}
+          />
+        </div>
+      </section>
       <section className="py-20">
         <div className="container mx-auto px-3">
           <div>{count}</div>
@@ -149,6 +220,7 @@ const Main = () => {
             className="w-full block border p-2 mb-4"
             value={searchValue}
             onInput={searchValueHandler}
+            ref={searchInputRef}
           />
         </div>
         <div className="container mx-auto px-3">
@@ -222,6 +294,13 @@ const Main = () => {
           <input type="text" value={myText} onInput={myInputHandler} />
         </div>
       </section>
+
+      <button
+        className="w-10 h-10 rounded-full bg-red-500 text-red-50 flex justify-center items-center fixed bottom-10 left-10"
+        onClick={goTopBtnHandler}
+      >
+        <Icon icon="icon-park-outline:to-top-one" />
+      </button>
     </main>
   );
 };
